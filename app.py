@@ -23,6 +23,8 @@ class App():
         # pull out parameters from the request
         program = request.query.get("program") if request.query.get("program") else "*"
         datasource = request.query.get("datasource") if request.query.get("datasource") else "*"
+        if datasource in config.APP_CONFIG["EXCLUDE"]:
+            abort(400, "Data not available")
         project = request.query.get("project") if request.query.get("project") else datasource
         if program == "*" and project == "*":
             abort(400, "missing required parameter (program or datasource)")
@@ -35,7 +37,7 @@ class App():
         lon_max = float(request.query.get("lon_max")) if request.query.get("lon_max") else 180
         lon_min = float(request.query.get("lon_min")) if request.query.get("lon_min") else -180
         start_date = request.query.get("start_date") if request.query.get("start_date") else "*"
-        end_date = request.query.get("end_date") if request.query.get("end_date") else datetime.datetime.now().replace(microsecond=0).isoformat()+'Z'
+        end_date = request.query.get("end_date") if request.query.get("end_date") else datetime.now().replace(microsecond=0).isoformat()+'Z'
         depth_min = float(request.query.get("depth_min")) if request.query.get("depth_min") else "*"
         depth_max = float(request.query.get("depth_max")) if request.query.get("depth_max") else "*"
 
