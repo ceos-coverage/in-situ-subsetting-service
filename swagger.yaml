@@ -1,0 +1,141 @@
+---
+swagger: "2.0"
+info:
+  description: "This is the Swagger documentation for the COVERAGE In-situ Subsetting Service."
+  version: "1.0.0"
+  title: "COVERAGE In-situ Subsetting Service"
+  termsOfService: ""
+  contact:
+    email: "coverage_team@jpl.nasa.gov"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8104"
+basePath: "/"
+tags:
+- name: "iss"
+  description: "Invoke the In-situ Subsetting Service"
+schemes:
+- "http"
+- "https"
+paths:
+  /iss?project={project}&source_id={source_id}&format={format}&lat_max={lat_max}&lat_min={lat_min}&lon_max={lon_max}&lon_min={lon_min}&start_date={start_date}&end_date={end_date}&depth_min={depth_min}&depth_max={depth_max}:
+    get:
+      tags:
+      - "iss"
+      summary: "Make a new ISS request"
+      description: "Invoke the In-situ Subsetting Service and return data"
+      produces:
+      - "application/json"
+      - "application/zip"
+      - "text/csv"
+      parameters:
+      - name: "project"
+        in: "path"
+        description: "The name of the program/project associated with the dataset to be queried. It is a required field if datasource is not specified."
+        required: true
+        type: "string"
+      - name: "source_id"
+        in: "path"
+        description: "A required field and the numeric identifier of the dataset to be queried."
+        required: true
+        type: "string"
+      - name: "datasource"
+        in: "path"
+        description: "The name of the data collection or store holding the dataset of interest."
+        required: false
+        type: "string"
+      - name: "format"
+        in: "path"
+        description: "Format is a required field that can take one of three values: zip, csv or json. The json option returns just the granule level metadata associated the subsetting request and data file outputs. Specifying csv as the format parameter returns just the subset data outputs in ASCII comma separated value format. Usage of a zip output format switch results in a zip-file being returned containing both the json metadata and csv output files."
+        required: true
+        type: "string"
+        enum:
+          - csv
+          - json
+          - zip
+      - name: "lat_max"
+        in: "path"
+        description: "Spatial bounding box Maximum Latitude for subsetting query (not required with a default value of 90)"
+        required: false
+        type: "number"
+        format: "float"
+        default: 90
+      - name: "lat_min"
+        in: "path"
+        description: "Spatial bounding box Minimum Latitude for subsetting query (not required with a default value of -90)"
+        required: false
+        type: "number"
+        format: "float"
+        default: -90
+      - name: "lon_max"
+        in: "path"
+        description: "Spatial bounding box Maximum Longitude for subsetting query (not required with a default value of 180)"
+        required: false
+        type: "number"
+        format: "float"
+        default: 180
+      - name: "lon_min"
+        in: "path"
+        description: "Spatial bounding box Minimum Longitude for subsetting query (not required with a default value of -180)"
+        required: false
+        type: "number"
+        format: "float"
+        default: -180
+      - name: "start_date"
+        in: "path"
+        description: "Optional minimum date/time query filter in ISO-8601 format (YYYY-MM-DDTHH:MM:SSZ eg.2016-04-11T20:20:00Z). If unspecified, the global minimum date/time value of the given dataset is used by default."
+        required: false
+        type: "string"
+        default: "1970-01-01T00:00:00Z"
+      - name: "end_date"
+        in: "path"
+        description: "Optional maximum date/time query filter in ISO-8601 format (YYYY-MM-DDTHH:MM:SSZ eg.2018-10-30T00:00:00Z). If unspecified, the default value used is the current date/time."
+        required: false
+        type: "string"
+        default: "2030-12-31T23:59:59Z"
+      - name: "depth_min"
+        in: "path"
+        description: "Optional query minimum depth filter value. If unspecified, the dataset's global minimum depth value is used by default."
+        required: false
+        type: "number"
+        format: "float"
+        default: -10000
+      - name: "depth_max"
+        in: "path"
+        description: "Optional query maximum depth filter value. If unspecified, the dataset's global maximum depth value is used by default."
+        required: false
+        type: "number"
+        format: "float"
+        default: 10000
+      responses:
+        200:
+          description: "Successful operation"
+        400:
+          description: "Bad request error"
+        500:
+          description: "Internal server error"
+      security:
+      - api_key: []
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+  mitt_auth:
+    type: "oauth2"
+    authorizationUrl: "https://localhost/oauth/authorize"
+    flow: "implicit"
+    scopes:
+      read:sequences: "Retrieve results of sequences"
+      write:sequences: "Post arguments for sequences"
+definitions:
+  iss:
+    type: "object"
+    properties:
+      keywords:
+        type: "object"
+        additionalProperties: {}
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

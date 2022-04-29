@@ -1,4 +1,4 @@
-from bottle import Bottle, run, request, response
+from bottle import Bottle, run, request, response, static_file
 from app import App
 
 bottle_app = Bottle()
@@ -16,6 +16,19 @@ def enable_cors():
     response.headers['Access-Control-Allow-Methods'] = 'GET'
     response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
+@bottle_app.route('/iss/api')
+def server_static(filename='index.html'):
+    return static_file(filename, root='.')
+
+
+@bottle_app.route('/iss/api/swagger.yaml')
+def server_swagger_yaml(filename='swagger.yaml'):
+    return static_file(filename, root='.')
+
+
+@bottle_app.route('/iss/api/swagger/<filepath:path>')
+def server_swagger(filepath):
+    return static_file(filepath, root='./swagger/')
 
 @bottle_app.route('/iss')
 def get_data():
