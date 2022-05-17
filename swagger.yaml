@@ -16,7 +16,6 @@ tags:
 - name: "iss"
   description: "Invoke the In-situ Subsetting Service"
 schemes:
-- "http"
 - "https"
 paths:
   /iss?project={project}&source_id={source_id}&format={format}&lat_max={lat_max}&lat_min={lat_min}&lon_max={lon_max}&lon_min={lon_min}&start_date={start_date}&end_date={end_date}&depth_min={depth_min}&depth_max={depth_max}:
@@ -35,6 +34,7 @@ paths:
         description: "The name of the program/project associated with the dataset to be queried. It is a required field if datasource is not specified."
         required: true
         type: "string"
+        enum: ["CSIRO Southern Bluefin Tuna Tagging Program", "CSIRO White Shark Tagging Program", "IATTC E. Tropical Pacific Tuna Tagging Program", "IMOS", "LPRC Sailfish Tagging in the W. Atlantic", "NASA Saildrone ARCTIC MISST", "NASA Saildrone ATOMIC", "NASA Saildrone SPURS2", "Saildrone Baja Campaign", "Salinity Processes in the Upper Ocean Regional", "TAG"]
       - name: "source_id"
         in: "path"
         description: "A required field and the numeric identifier of the dataset to be queried."
@@ -45,6 +45,7 @@ paths:
         description: "The name of the data collection or store holding the dataset of interest."
         required: false
         type: "string"
+        enum: ["csiro", "taghost", "tagbase", "saildrone", "spurs"]
       - name: "format"
         in: "path"
         description: "Format is a required field that can take one of three values: zip, csv or json. The json option returns just the granule level metadata associated the subsetting request and data file outputs. Specifying csv as the format parameter returns just the subset data outputs in ASCII comma separated value format. Usage of a zip output format switch results in a zip-file being returned containing both the json metadata and csv output files."
@@ -137,5 +138,5 @@ definitions:
         type: "object"
         additionalProperties: {}
 externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+  description: "In-situ Subsetting Service Datasets"
+  url: "https://drive.google.com/file/d/1_SB1MPjXI5Sy5uBwvEICL--FGTQDgBjC/view?usp=sharing"
