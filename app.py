@@ -24,7 +24,7 @@ class App():
         program = request.query.get("program") if request.query.get("program") else "*"
         datasource = request.query.get("datasource") if request.query.get("datasource") else "*"
         if datasource in config.APP_CONFIG["EXCLUDE"]:
-            abort(400, "Data not available")
+            abort(400, "Data excluded from download")
         project = request.query.get("project") if request.query.get("project") else datasource
         if program == "*" and project == "*":
             abort(400, "missing required parameter (program or datasource)")
@@ -42,7 +42,7 @@ class App():
         depth_max = float(request.query.get("depth_max")) if request.query.get("depth_max") else "*"
 
         # get filenames
-        filename = self._build_filename(program if program !="*" else project, source_id, lat_min, lat_max, lon_min, lon_max, start_date, end_date, depth_min, depth_max)
+        filename = self._build_filename(program if program != "*" else project, source_id, lat_min, lat_max, lon_min, lon_max, start_date, end_date, depth_min, depth_max)
         csv_filename = filename + ".csv"
         json_filename = filename + ".json"
         zip_filename = filename + ".zip"
@@ -58,6 +58,9 @@ class App():
             # get project if not defined earlier
             if project == "*":
                 project = metadata.get("datasource")
+            # check for tds_url (i.e. downloadable dataset)
+            if metadata.get("downloadable") is False:
+                abort(400, "Data not available for download")
 
         # return data into the right format
         if "csv" in output_format:
@@ -95,7 +98,7 @@ class App():
     def _fix_variables(self, variables):
         output = []
         for variable in variables:
-            var = variable.lower().replace(' ','_') + '_d'
+            var = variable.lower().replace(' ', '_') + '_d'
             output.append(var)
         return output
 
@@ -153,6 +156,9 @@ class App():
                     "source_id": doc.get("source_id"),
                     "title": doc.get("title")
             }
+            tds_url = doc.get("tds_url")
+            if tds_url is None:
+                metadata["downloadable"] = False
             with open(filename, "w") as f:
                 f.write(json.dumps(metadata, indent=4, sort_keys=True))
         else:
