@@ -103,6 +103,7 @@ class App():
         return output
 
     def _build_data_url(self, project, source_id, lat_min, lat_max, lon_min, lon_max, start_date, end_date, depth_min, depth_max, variables=["*_d"]):
+        project = project.replace('%20', ' ')
         query = {
             "wt": "csv",
             "rows": "10000000",
