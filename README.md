@@ -25,9 +25,10 @@ Where:
 |Parameter     |Description   |
 | ------------ | ------------ | 
 | http://localhost/iss | is the server address where ISS is hosted, and ? specifies the start of the query string. |
-|program=PROGRAM (**)|PROGRAM the name of the program/project associated with the dataset to be queried (from table 1).  It is a required field if DATASOURCE is not specified.|
+|program=PROGRAM (**)|PROGRAM the name of the program associated with the dataset to be queried (from table 1).  It is a required field if PROJECT/DATASOURCE is not specified.|
 |source_id=SOURCEID (*)|SOURCEID is a required field and the numeric identifier of the dataset to be queried (from table 1).|
-|datasource=DATASOURCE  (**)|DATASOURCE is the name of the data collection or store (from table 1) holding the dataset of interest.|
+|project=PROJECT  (**)|PROJECT is the name of the data collection or store (from table 1) holding the dataset of interest. Same as DATASOURCE.|
+|datasource=DATASOURCE  (**)|DATASOURCE is the name of the data collection or store (from table 1) holding the dataset of interest. Same as PROJECT.|
 |format=[zip,csv,json]|Format is a required field that can take one of three values: zip, csv or json.  The json option returns just the granule level metadata associated the subsetting request and data file outputs. Specifying csv as the format parameter returns just the subset data outputs in ASCII comma separated value format.  Usage of a zip output format switch results in a zip-file being returned containing both the json metadata and csv output files.|
 |lat_max|Spatial bounding box Maximum Latitude for subsetting query (not required with a default value of 90)|
 |lat_min|Spatial bounding box Minimum Latitude for subsetting query (not required with a default value of -90)|
@@ -40,13 +41,13 @@ Where:
 
 \*  		Required parameter
 
-\*\*		Contingent required parameter (PROGRAM  or DATASOURCE)
+\*\*		Contingent required parameter (PROGRAM  or PROJECT/DATASOURCE)
 
 NOTE: Case Sensitivity of SSI API parameters
 
-* URL query parameters always need to be specified as lower case (attributes in left column of the listing above, such as “program”, “format”, etc.).
+* URL query parameters always need to be specified as lower case (attributes in left column of the listing above, such as “programp”, “format”, etc.).
   
-* Values are generally not case sensitive, and can be given as either upper or lower-case characters. Entries for the “datasource” and “program” attributes are the only exception for which values are required all in lower-case.
+* Values are generally not case sensitive, and can be given as either upper or lower-case characters. Entries for the “project/datasource” and “program” attributes are the only exception for which values are required all in lower-case.
 
 ## Sample Outputs
 
