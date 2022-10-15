@@ -2,7 +2,7 @@
 swagger: "2.0"
 info:
   description: "This is the Swagger documentation for the COVERAGE In-situ Subsetting Service."
-  version: "1.0.0"
+  version: "1.0.5"
   title: "COVERAGE In-situ Subsetting Service"
   termsOfService: ""
   contact:
@@ -17,8 +17,9 @@ tags:
   description: "Invoke the In-situ Subsetting Service"
 schemes:
 - "https"
+- "http"
 paths:
-  /iss?project={project}&source_id={source_id}&program={program}format={format}&lat_max={lat_max}&lat_min={lat_min}&lon_max={lon_max}&lon_min={lon_min}&start_date={start_date}&end_date={end_date}&depth_min={depth_min}&depth_max={depth_max}:
+  /iss?datasource={datasource}&source_id={source_id}&program={program}&format={format}&lat_max={lat_max}&lat_min={lat_min}&lon_max={lon_max}&lon_min={lon_min}&start_date={start_date}&end_date={end_date}&depth_min={depth_min}&depth_max={depth_max}:
     get:
       tags:
       - "iss"
@@ -29,9 +30,9 @@ paths:
       - "application/zip"
       - "text/csv"
       parameters:
-      - name: "project"
+      - name: "datasource"
         in: "path"
-        description: "The name of the data collection or store holding the dataset of interest. Same as 'datasource'."
+        description: "The name of the data collection or store holding the dataset of interest."
         required: true
         type: "string"
         enum: ["csiro", "taghost", "tagbase", "saildrone", "spurs"]
@@ -42,7 +43,7 @@ paths:
         type: "string"
       - name: "program"
         in: "path"
-        description: "The name of the program associated with the dataset to be queried. It is a required field if project/datasource is not specified."
+        description: "The name of the program associated with the dataset to be queried. It is a required field if datasource is not specified."
         required: true
         type: "string"
         enum: ["CSIRO Southern Bluefin Tuna Tagging Program", "CSIRO White Shark Tagging Program", "IATTC E. Tropical Pacific Tuna Tagging Program", "IMOS", "LPRC Sailfish Tagging in the W. Atlantic", "NASA Saildrone ARCTIC MISST", "NASA Saildrone ATOMIC", "NASA Saildrone SPURS2", "Saildrone Baja Campaign", "Salinity Processes in the Upper Ocean Regional", "TAG"]

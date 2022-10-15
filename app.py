@@ -50,6 +50,7 @@ class App():
         # get the metadata if it's not cached
         if not os.path.isfile(json_filename):
             url = self._build_metadata_url(program, project, source_id)
+            # print(url)
             self._download_file(url, json_filename)
         with open(json_filename, "r") as f:
             metadata = json.load(f)
@@ -116,7 +117,7 @@ class App():
     def _build_metadata_url(self, program, project, source_id):
         query = {
             "wt": "json",
-            "q": "datatype:track AND program:%s* AND project:%s AND source_id: %s" % (program, project, source_id)
+            "q": "datatype:track AND program_text:%s* AND project:%s AND source_id: %s" % (program, project, source_id)
         }
         return config.APP_CONFIG["SOLR_URL"] + "?" + urlencode(query)
 
